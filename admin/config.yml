@@ -3,31 +3,48 @@ backend:
   repo: skdidbstkd/hanssemdesignbuff
   branch: main
   base_url: https://netlify-cms-github-oauth-provider-r.vercel.app
-  auth_endpoint: /api/auth
+  auth_endpoint: /auth
 
-media_folder: "assets"
-public_folder: "assets"
+media_folder: "assets/uploads"
+public_folder: "/assets/uploads"
 
-publish_mode: editorial_workflow
+site_url: https://skdidbstkd.github.io/hanssemdesignbuff
+display_url: https://skdidbstkd.github.io/hanssemdesignbuff
+
+logo_url: /assets/uploads/logo.png
 
 collections:
+  - name: "pages"
+    label: "Pages"
+    files:
+      - file: "index.html"
+        label: "Home"
+        name: "home"
+        editor:
+          preview: false
+        fields:
+          - { label: "Title", name: "title", widget: "string" }
+          - { label: "Body", name: "body", widget: "markdown" }
+
   - name: "portfolio"
-    label: "포트폴리오"
+    label: "Portfolio"
     folder: "content/portfolio"
     create: true
     slug: "{{slug}}"
     fields:
-      - { label: "제목", name: "title", widget: "string" }
-      - { label: "설명", name: "description", widget: "text" }
-      - { label: "대표 이미지", name: "thumbnail", widget: "image" }
-      - { label: "본문", name: "body", widget: "markdown" }
+      - { label: "Title", name: "title", widget: "string" }
+      - { label: "Date", name: "date", widget: "datetime" }
+      - { label: "Description", name: "description", widget: "text" }
+      - { label: "Thumbnail", name: "thumbnail", widget: "image" }
+      - { label: "Body", name: "body", widget: "markdown" }
 
-  - name: "vr"
-    label: "3D VR 투어"
-    folder: "content/vr"
+  - name: "designers"
+    label: "Designers"
+    folder: "content/designers"
     create: true
     slug: "{{slug}}"
     fields:
-      - { label: "현장명", name: "title", widget: "string" }
-      - { label: "부감도", name: "thumbnail", widget: "image" }
-      - { label: "링크", name: "link", widget: "string" }
+      - { label: "Name", name: "name", widget: "string" }
+      - { label: "Role", name: "role", widget: "string" }
+      - { label: "Profile Image", name: "profile_image", widget: "image" }
+      - { label: "Bio", name: "bio", widget: "markdown" }
