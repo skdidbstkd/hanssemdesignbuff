@@ -5,46 +5,44 @@ backend:
   base_url: https://netlify-cms-github-oauth-provider-r.vercel.app
   auth_endpoint: /auth
 
-media_folder: "assets/uploads"
-public_folder: "/assets/uploads"
+media_folder: "assets/uploads"   # 실제 파일 저장 경로
+public_folder: "/hanssemdesignbuff/assets/uploads"  # 웹에서 보이는 경로 (GitHub Pages 하위 경로 반영)
 
 site_url: https://skdidbstkd.github.io/hanssemdesignbuff
 display_url: https://skdidbstkd.github.io/hanssemdesignbuff
 
-logo_url: /assets/uploads/logo.png
+publish_mode: editorial_workflow
 
 collections:
-  - name: "pages"
-    label: "Pages"
-    files:
-      - file: "index.html"
-        label: "Home"
-        name: "home"
-        editor:
-          preview: false
-        fields:
-          - { label: "Title", name: "title", widget: "string" }
-          - { label: "Body", name: "body", widget: "markdown" }
-
   - name: "portfolio"
-    label: "Portfolio"
+    label: "포트폴리오"
     folder: "content/portfolio"
     create: true
     slug: "{{slug}}"
     fields:
-      - { label: "Title", name: "title", widget: "string" }
-      - { label: "Date", name: "date", widget: "datetime" }
-      - { label: "Description", name: "description", widget: "text" }
-      - { label: "Thumbnail", name: "thumbnail", widget: "image" }
-      - { label: "Body", name: "body", widget: "markdown" }
+      - { label: "제목", name: "title", widget: "string" }
+      - { label: "설명", name: "description", widget: "text" }
+      - { label: "대표 이미지", name: "thumbnail", widget: "image" }
+      - { label: "본문", name: "body", widget: "markdown" }
 
   - name: "designers"
-    label: "Designers"
+    label: "디자이너"
     folder: "content/designers"
     create: true
     slug: "{{slug}}"
     fields:
-      - { label: "Name", name: "name", widget: "string" }
-      - { label: "Role", name: "role", widget: "string" }
-      - { label: "Profile Image", name: "profile_image", widget: "image" }
-      - { label: "Bio", name: "bio", widget: "markdown" }
+      - { label: "이름", name: "name", widget: "string" }
+      - { label: "직책", name: "role", widget: "string" }
+      - { label: "프로필 이미지", name: "profile_image", widget: "image" }
+      - { label: "소개", name: "bio", widget: "markdown" }
+
+  - name: "vr"
+    label: "3D VR 투어"
+    folder: "content/vr"
+    create: true
+    slug: "{{slug}}"
+    fields:
+      - { label: "현장명", name: "title", widget: "string" }
+      - { label: "부감도", name: "thumbnail", widget: "image" }
+      - { label: "링크", name: "link", widget: "string" }
+      - { label: "설명", name: "description", widget: "text", required: false }
