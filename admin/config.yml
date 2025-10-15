@@ -2,7 +2,7 @@ backend:
   name: github
   repo: skdidbstkd/hanssemdesignbuff
   branch: main
-  base_url: https://skdidbstkd.github.io
+  base_url: https://netlify-cms-github-oauth-provider-r.vercel.app
   auth_endpoint: /api/auth
 
 media_folder: "assets"
