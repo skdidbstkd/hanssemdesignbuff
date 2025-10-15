@@ -77,5 +77,16 @@
     <div>010-6245-9059 • skdidbstkd@naver.com • <a href="https://blog.naver.com/paul940125" target="_blank">네이버 블로그</a></div>
   </div>
 </footer>
+<script>
+document.body.classList.add('page-enter');
+document.querySelectorAll('a[href]').forEach(a=>{
+  if(a.target==='_blank' || a.href.includes('#')) return;
+  a.addEventListener('click', e=>{
+    e.preventDefault();
+    document.body.classList.add('page-leave');
+    setTimeout(()=>location.href=a.href, 200);
+  });
+});
+</script>
 </body>
 </html>
