@@ -6,16 +6,14 @@
 <title>한샘 리하우스 디자인버프 대리점</title>
 <link rel="stylesheet" href="style.css" />
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;600;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
 
 <header class="site-header">
   <div class="wrap inner">
     <a class="brand" href="index.html">
-      <!-- 3. 로고 안 보일 때: 파일명/경로 정확히 확인 (assets/한샘_디자인버프_로고_최종.png) -->
-      <img class="logo" src="assets/한샘_디자인버프_로고_최종.png" alt="DesignBuff" />
-      <span class="title">Hanssem DesignBuff</span>
+      <img class="logo" src="assets/한샘_디자인버프_로고_최종.png" alt="DesignBuff">
     </a>
     <nav class="nav">
       <a href="portfolio.html">포트폴리오</a>
@@ -29,24 +27,18 @@
 </header>
 
 <section class="hero">
-  <div class="slides">
-    <!-- 4. 메인 사진 바꾸기: 아래 url() 경로만 교체 (assets 폴더 안 파일명 그대로) -->
-    <div class="slide on" style="background-image:url('assets/상도동_동아_29py_ (1).jpg')"></div>
-    <div class="slide"    style="background-image:url('assets/연희동_오성빌라_18py_(1).jpg')"></div>
-    <div class="slide"    style="background-image:url('assets/상도동_동아_29py_ (3).jpg')"></div>
-  </div>
+  <div class="slide on" style="background-image:url('assets/메인1.jpg')"></div>
+  <div class="slide"    style="background-image:url('assets/메인2.jpg')"></div>
+  <div class="slide"    style="background-image:url('assets/메인3.jpg')"></div>
   <div class="veil"></div>
   <div class="copy">
-    <h1>공간을 바꾸는 감성, <br/>디자인버프</h1>
+    <h1>공간을 바꾸는 감성, 디자인버프</h1>
     <p>밝고 따뜻한 무드의 인테리어 포트폴리오</p>
     <a class="cta" href="portfolio.html">시공사례 보기</a>
   </div>
 </section>
 
-<script>
-const slides=[...document.querySelectorAll('.slide')]; let i=0;
-setInterval(()=>{slides.forEach((s,idx)=>s.classList.toggle('on', idx===i)); i=(i+1)%slides.length;}, 4200);
-</script>
+<!-- 부드러운 전환 + 슬라이드 -->
 <script>
 document.body.classList.add('page-enter');
 document.querySelectorAll('a[href]').forEach(a=>{
@@ -57,6 +49,8 @@ document.querySelectorAll('a[href]').forEach(a=>{
     setTimeout(()=>location.href=a.href, 200);
   });
 });
+const slides=[...document.querySelectorAll('.hero .slide')]; let i=0;
+setInterval(()=>{slides.forEach((s,idx)=>s.classList.toggle('on',idx===i)); i=(i+1)%slides.length;},4200);
 </script>
 </body>
 </html>
