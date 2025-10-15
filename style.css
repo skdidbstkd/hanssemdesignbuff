@@ -1,0 +1,58 @@
+:root{ --wrap:1100px; --fg:#111; --muted:#666; --pale:#fafafa; --brand:#111 }
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{font-family:'Noto Sans KR',system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial; color:var(--fg)}
+a{color:inherit;text-decoration:none}
+img{max-width:100%;display:block}
+
+.wrap{max-width:var(--wrap);margin:0 auto;padding:0 20px}
+.section{padding:64px 0}
+.pale{background:var(--pale)}
+.lead{color:var(--muted);margin-top:-6px}
+
+.site-header{position:sticky;top:0;background:#fff;border-bottom:1px solid #eee;z-index:10}
+.site-header .wrap{display:flex;align-items:center;justify-content:space-between;height:64px}
+.logo{height:32px}
+.nav a{margin-left:20px;font-size:14px}
+.btn{padding:10px 14px;border-radius:8px;background:var(--brand);color:#fff;display:inline-block}
+.btn:hover{opacity:.9}
+
+.hero{position:relative;height:64vh;min-height:420px;background:#eee;overflow:hidden}
+.slideshow,.slide{position:absolute;inset:0}
+.slide{background-size:cover;background-position:center;opacity:0;transition:opacity .6s ease}
+.slide.on{opacity:1}
+.hero .overlay{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;background:linear-gradient(180deg,rgba(0,0,0,.25),rgba(0,0,0,.35))}
+.hero h2{color:#fff;font-weight:600;font-size:36px;margin:0 0 16px}
+.hero .btn{background:#fff;color:#111}
+
+h3{font-size:22px;margin:0 0 12px}
+h4{font-size:16px;margin:0 0 6px}
+p{font-size:14px;line-height:1.7}
+
+.filters{display:flex;gap:8px;margin:14px 0 18px}
+.filters button{padding:8px 12px;border:1px solid #ddd;background:#fff;border-radius:8px;cursor:pointer;font-size:13px}
+.filters .active{background:#111;color:#fff;border-color:#111}
+
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+.card{border:1px solid #eee;border-radius:12px;overflow:hidden;background:#fff}
+.card-body{padding:12px}
+.team-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px}
+.team-card{border:1px solid #eee;border-radius:12px;padding:14px;background:#fff}
+.team-card .sm{font-size:13px;color:#333}
+
+.form label{display:block;margin:10px 0}
+.form input,.form select,.form textarea{width:100%;padding:10px 12px;border:1px solid #ddd;border-radius:8px;font-size:14px}
+.form textarea{min-height:120px}
+.form .checkboxes{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:8px}
+.form-actions{margin-top:12px}
+
+.site-footer{padding:32px 0;border-top:1px solid #eee;font-size:13px;color:#444}
+
+@media (max-width:900px){
+  .grid{grid-template-columns:1fr 1fr}
+  .team-grid{grid-template-columns:1fr}
+  .hero h2{font-size:28px}
+}
+@media (max-width:600px){
+  .grid{grid-template-columns:1fr}
+}
