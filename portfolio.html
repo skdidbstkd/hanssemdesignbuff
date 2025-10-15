@@ -1,1 +1,86 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>시공사례 - Hanssem DesignBuff</title>
+<link rel="stylesheet" href="style.css" />
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
+</head>
+<body class="page">
+<header class="site-header">
+  <div class="wrap inner">
+    <a class="brand" href="index.html">
+      <img class="logo" src="assets/한샘_디자인버프_로고_최종.png" alt="DesignBuff" />
+      <span>Hanssem DesignBuff</span>
+    </a>
+    <nav class="nav">
+      <a href="portfolio.html">포트폴리오</a>
+      <a href="designers.html">디자이너 소개</a>
+      <a href="process.html">상담 프로세스</a>
+      <a href="qna.html">Q&A</a>
+      <a class="btn" href="https://docs.google.com/forms/d/e/1FAIpQLScyg6hIGde0LT1p-Z1oxUnGjFhkHNNuX_5J4SA21o1cYs_YwA/viewform" target="_blank" rel="noopener">상담신청</a>
+    </nav>
+  </div>
+</header>
+
+<main class="wrap">
+  <h2 class="title">시공사례</h2>
+  <p class="sub">아파트 / 평형대 별 사례</p>
+
+  <!-- 카테고리 (필요시 확장) -->
+  <div style="display:flex;gap:10px;margin:10px 0 24px">
+    <a href="#" data-filter="all" class="btn" style="background:#f0f0f0;color:#111">전체</a>
+    <a href="#" data-filter="20" class="btn" style="background:#fff;border:1px solid #ddd;color:#111">20py</a>
+    <a href="#" data-filter="30" class="btn" style="background:#fff;border:1px solid #ddd;color:#111">30py</a>
+    <a href="#" data-filter="40" class="btn" style="background:#fff;border:1px solid #ddd;color:#111">40py</a>
+  </div>
+
+  <div class="grid" id="cases">
+    <a class="card" data-cat="30" href="#">
+      <img class="thumb" src="assets/역촌_하늘애아파트_1501호_(6).jpg" alt="">
+      <div class="meta">
+        <div class="badge">30py</div>
+        <div>역촌 하늘애 30평대</div>
+      </div>
+    </a>
+    <a class="card" data-cat="20" href="#">
+      <img class="thumb" src="assets/역촌_하늘애아파트_1501호_(7).jpg" alt="">
+      <div class="meta">
+        <div class="badge">20py</div>
+        <div>역촌 하늘애 20평대</div>
+      </div>
+    </a>
+    <a class="card" data-cat="40" href="#">
+      <img class="thumb" src="assets/역촌_하늘애아파트_1501호_(8).jpg" alt="">
+      <div class="meta">
+        <div class="badge">40py</div>
+        <div>역촌 하늘애 40평대</div>
+      </div>
+    </a>
+  </div>
+</main>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <div>한샘 리하우스 디자인버프 대리점</div>
+    <div>010-6245-9059 • skdidbstkd@naver.com • <a href="https://blog.naver.com/paul940125" target="_blank">네이버 블로그</a></div>
+  </div>
+</footer>
+
+<script>
+const cases = [...document.querySelectorAll('#cases .card')];
+document.querySelectorAll('[data-filter]').forEach(btn=>{
+  btn.addEventListener('click', (e)=>{
+    e.preventDefault();
+    const f = btn.getAttribute('data-filter');
+    cases.forEach(c=>{
+      c.style.display = (f==='all'||c.getAttribute('data-cat')===f)?'block':'none';
+    });
+  });
+});
+</script>
+</body>
+</html>
 
