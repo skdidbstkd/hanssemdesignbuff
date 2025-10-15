@@ -1,0 +1,31 @@
+backend:
+  name: github
+  repo: skdidbstkd/hanssemdesignbuff
+  branch: main
+
+media_folder: "assets"
+public_folder: "assets"
+
+publish_mode: editorial_workflow
+
+collections:
+  - name: "portfolio"
+    label: "포트폴리오"
+    folder: "content/portfolio"
+    create: true
+    slug: "{{slug}}"
+    fields:
+      - { label: "제목", name: "title", widget: "string" }
+      - { label: "설명", name: "description", widget: "text" }
+      - { label: "대표 이미지", name: "thumbnail", widget: "image" }
+      - { label: "본문", name: "body", widget: "markdown" }
+
+  - name: "vr"
+    label: "3D VR 투어"
+    folder: "content/vr"
+    create: true
+    slug: "{{slug}}"
+    fields:
+      - { label: "현장명", name: "title", widget: "string" }
+      - { label: "부감도", name: "thumbnail", widget: "image" }
+      - { label: "링크", name: "link", widget: "string" }
