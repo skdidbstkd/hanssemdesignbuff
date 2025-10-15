@@ -1,10 +1,26 @@
 <!doctype html>
-<html>
-<head>
-  <meta charset="utf-8" />
-  <title>DesignBuff CMS Admin</title>
-  <script src="https://unpkg.com/decap-cms@3.0.0/dist/decap-cms.js"></script>
-</head>
-<body>
-</body>
+<html lang="ko">
+  <head>
+    <meta charset="utf-8" />
+    <title>DesignBuff CMS Admin</title>
+    <!-- decap-cms 스크립트는 반드시 defer 로딩 -->
+    <script src="https://unpkg.com/decap-cms@3.0.0/dist/decap-cms.js" defer></script>
+  </head>
+  <body>
+    <!-- 루트 엘리먼트 명시 -->
+    <div id="nc-root"></div>
+
+    <script>
+      // DOM이 준비된 후에 수동 초기화 (appendChild 에러 방지)
+      window.addEventListener('DOMContentLoaded', function () {
+        if (window.CMS) {
+          window.CMS.init({
+            config: '/hanssemdesignbuff/admin/config.yml' // GitHub Pages 하위 경로 고려
+          });
+        } else {
+          console.error('Decap CMS script not loaded');
+        }
+      });
+    </script>
+  </body>
 </html>
