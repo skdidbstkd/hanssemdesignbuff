@@ -3,44 +3,42 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>포트폴리오 - Hanssem DesignBuff</title>
+<title>시공사례 - Hanssem DesignBuff</title>
 <link rel="stylesheet" href="style.css" />
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;600;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body class="page">
+
 <header class="site-header">
   <div class="wrap inner">
-    <a class="brand" href="index.html">
-      <img class="logo" src="assets/한샘_디자인버프_로고_최종.png" alt="DesignBuff" />
-      <span class="title">Hanssem DesignBuff</span>
-    </a>
+    <a class="brand" href="index.html"><img class="logo" src="assets/한샘_디자인버프_로고_최종.png" alt=""></a>
     <nav class="nav">
       <a href="portfolio.html">포트폴리오</a>
       <a href="designers.html">디자이너 소개</a>
       <a href="process.html">상담 프로세스</a>
       <a href="vr.html">3D VR 투어</a>
       <a href="qna.html">Q&A</a>
-      <a class="btn" href="https://docs.google.com/forms/d/e/1FAIpQLScyg6hIGde0LT1p-Z1oxUnGjFhkHNNuX_5J4SA21o1cYs_YwA/viewform" target="_blank" rel="noopener">상담신청</a>
+      <a class="btn" href="https://docs.google.com/forms/d/e/1FAIpQLScyg6hIGde0LT1p-Z1oxUnGjFhkHNNuX_5J4SA21o1cYs_YwA/viewform" target="_blank">상담신청</a>
     </nav>
   </div>
 </header>
 
-<main class="wrap">
-  <h2 class="title">포트폴리오</h2>
-  <p class="sub">현장별로 확인하세요.</p>
+<main class="wrap section">
+  <h2 class="title">시공사례</h2>
+  <p class="sub">현장별 결과물을 모았습니다.</p>
+  <div class="divider"></div>
 
-  <div class="grid-works">
-    <!-- 예시 1 -->
+  <div class="grid">
+    <!-- 카드 예시: 필요한 만큼 복제하고 파일/텍스트만 교체 -->
     <a class="card" href="work-상도동-동아-29py.html">
-      <img class="thumb" src="assets/상도동_동아_29py_ (1).jpg" alt="">
+      <img class="thumb" src="assets/상도동_동아_29py_1.webp" alt="">
       <div class="body">
-        <div class="name">상도동 동아아파트 29py</div>
-        <div class="meta">내추럴 화이트 / 간접조명과 공간분리</div>
+        <div class="name">상도동 동아 29py</div>
+        <div class="meta">밝은 우드톤 / 주방 리모델링</div>
       </div>
     </a>
 
-    <!-- 예시 2 -->
     <a class="card" href="work-역촌-하늘애-30py.html">
       <img class="thumb" src="assets/역촌_하늘애아파트_1501호_(6).jpg" alt="">
       <div class="body">
@@ -49,18 +47,16 @@
       </div>
     </a>
 
-    <!-- 예시 3 -->
-    <a class="card" href="work-연희동-오성빌라-18py.html">
-      <img class="thumb" src="assets/연희동_오성빌라_18py_(1).jpg" alt="">
+    <a class="card" href="work-광진-현대-24py.html">
+      <img class="thumb" src="assets/광진_현대_24py_1.webp" alt="">
       <div class="body">
-        <div class="name">연희동 오성빌라 18py</div>
-        <div class="meta">베이지그레이 / 간접조명</div>
+        <div class="name">광진 현대 24py</div>
+        <div class="meta">거실 확장 / 간접조명</div>
       </div>
     </a>
 
-    <!-- 예시 4 -->
     <a class="card" href="work-상계-주공-32py.html">
-      <img class="thumb" src="assets/상계_주공_32py_1.jpg" alt="">
+      <img class="thumb" src="assets/상계_주공_32py_1.webp" alt="">
       <div class="body">
         <div class="name">상계 주공 32py</div>
         <div class="meta">톤온톤 베이지 / 호텔라이크</div>
@@ -70,20 +66,14 @@
 </main>
 
 <footer class="site-footer">
-  <div class="wrap">
-    <div>한샘 리하우스 디자인버프 대리점</div>
-    <div>010-6245-9059 • skdidbstkd@naver.com • <a href="https://blog.naver.com/paul940125" target="_blank">네이버 블로그</a></div>
-  </div>
+  <div class="wrap">한샘 리하우스 디자인버프 대리점 · 010-6245-9059 · skdidbstkd@naver.com · <a href="https://blog.naver.com/paul940125" target="_blank">네이버 블로그</a></div>
 </footer>
+
 <script>
 document.body.classList.add('page-enter');
 document.querySelectorAll('a[href]').forEach(a=>{
-  if(a.target==='_blank' || a.href.includes('#')) return;
-  a.addEventListener('click', e=>{
-    e.preventDefault();
-    document.body.classList.add('page-leave');
-    setTimeout(()=>location.href=a.href, 200);
-  });
+  if(a.target==='_blank'||a.href.includes('#'))return;
+  a.addEventListener('click',e=>{e.preventDefault();document.body.classList.add('page-leave');setTimeout(()=>location.href=a.href,200);});
 });
 </script>
 </body>
