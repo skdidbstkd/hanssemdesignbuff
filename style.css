@@ -101,3 +101,9 @@ h2.title{margin:0 0 6px; font-size:30px; letter-spacing:.005em}
   .flow{grid-template-columns:1fr}
   .info{grid-template-columns:1fr}
 }
+
+/* 페이지 페이드 */
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+@keyframes fadeOut{from{opacity:1}to{opacity:0}}
+.page-enter{animation:fadeIn .35s ease both}
+.page-leave{animation:fadeOut .25s ease both}
