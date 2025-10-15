@@ -6,42 +6,45 @@
 <title>한샘 리하우스 디자인버프 대리점</title>
 <link rel="stylesheet" href="style.css" />
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;600;800&display=swap" rel="stylesheet">
 </head>
 <body>
 
 <header class="site-header">
   <div class="wrap inner">
     <a class="brand" href="index.html">
+      <!-- 3. 로고 안 보일 때: 파일명/경로 정확히 확인 (assets/한샘_디자인버프_로고_최종.png) -->
       <img class="logo" src="assets/한샘_디자인버프_로고_최종.png" alt="DesignBuff" />
-      <span>Hanssem DesignBuff</span>
+      <span class="title">Hanssem DesignBuff</span>
     </a>
     <nav class="nav">
       <a href="portfolio.html">포트폴리오</a>
       <a href="designers.html">디자이너 소개</a>
       <a href="process.html">상담 프로세스</a>
       <a href="qna.html">Q&A</a>
-      <!-- 구글폼 링크로 바로 이동 -->
       <a class="btn" href="https://docs.google.com/forms/d/e/1FAIpQLScyg6hIGde0LT1p-Z1oxUnGjFhkHNNuX_5J4SA21o1cYs_YwA/viewform" target="_blank" rel="noopener">상담신청</a>
     </nav>
   </div>
 </header>
 
-<!-- HERO ONLY (스크롤 유도 없음) -->
 <section class="hero">
   <div class="slides">
+    <!-- 4. 메인 사진 바꾸기: 아래 url() 경로만 교체 (assets 폴더 안 파일명 그대로) -->
     <div class="slide on" style="background-image:url('assets/역촌_하늘애아파트_1501호_(2).jpg')"></div>
     <div class="slide"    style="background-image:url('assets/역촌_하늘애아파트_1501호_(3).jpg')"></div>
     <div class="slide"    style="background-image:url('assets/역촌_하늘애아파트_1501호_(6).jpg')"></div>
   </div>
   <div class="veil"></div>
   <div class="copy">
-    <h1>한샘 리하우스 디자인버프 대리점</h1>
-    <p>감성적인, 밝은 톤의 인테리어 포트폴리오</p>
+    <h1>공간을 바꾸는 감성, <br/>디자인버프</h1>
+    <p>밝고 따뜻한 무드의 인테리어 포트폴리오</p>
     <a class="cta" href="portfolio.html">시공사례 보기</a>
   </div>
 </section>
 
-<script src="app.js"></script>
+<script>
+const slides=[...document.querySelectorAll('.slide')]; let i=0;
+setInterval(()=>{slides.forEach((s,idx)=>s.classList.toggle('on', idx===i)); i=(i+1)%slides.length;}, 4200);
+</script>
 </body>
 </html>
