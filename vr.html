@@ -6,86 +6,58 @@
 <title>3D VR 투어 - Hanssem DesignBuff</title>
 <link rel="stylesheet" href="style.css" />
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;600;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body class="page">
+
 <header class="site-header">
   <div class="wrap inner">
-    <a class="brand" href="index.html">
-      <img class="logo" src="assets/한샘_디자인버프_로고_최종.png" alt="DesignBuff" />
-      <span class="title">Hanssem DesignBuff</span>
-    </a>
+    <a class="brand" href="index.html"><img class="logo" src="assets/한샘_디자인버프_로고_최종.png" alt=""></a>
     <nav class="nav">
       <a href="portfolio.html">포트폴리오</a>
       <a href="designers.html">디자이너 소개</a>
       <a href="process.html">상담 프로세스</a>
       <a href="vr.html">3D VR 투어</a>
       <a href="qna.html">Q&A</a>
-      <a class="btn" href="https://docs.google.com/forms/d/e/1FAIpQLScyg6hIGde0LT1p-Z1oxUnGjFhkHNNuX_5J4SA21o1cYs_YwA/viewform" target="_blank" rel="noopener">상담신청</a>
+      <a class="btn" href="https://docs.google.com/forms/d/e/1FAIpQLScyg6hIGde0LT1p-Z1oxUnGjFhkHNNuX_5J4SA21o1cYs_YwA/viewform" target="_blank">상담신청</a>
     </nav>
   </div>
 </header>
 
-<main class="wrap">
+<main class="wrap section">
   <h2 class="title">3D VR 투어</h2>
   <p class="sub">랜더링 투어를 통해 공간을 미리 체험해 보세요.</p>
+  <div class="divider"></div>
 
-  <!-- 2열 카드 목록 (썸네일 + 현장명 + 바로보기) -->
-  <div class="grid-works" id="vr-list">
-    <!-- 샘플 1 -->
+  <div class="grid" id="vr-list">
+    <!-- 예시 카드 (복제해서 사용) -->
     <div class="card">
-      <img class="thumb" src="assets/VR 창동 동아청솔아파트 49평형.jpeg" alt="">
+      <img class="thumb" src="assets/vr_상계_주공_32py.jpg" alt="">
       <div class="body">
-        <div class="name">창동 동아청솔 49py (VR)</div>
-        <div class="meta">현장 부감도 / 카페형 거실</div>
-        <div style="margin-top:10px; display:flex; gap:10px;">
-          <a class="btn" href="https://hpvr.hanssem.com/pub/tool/panorama/tour?obsPlanId=3FO3S1GAYU46&locale=ko_KR&utm_source=light720_share&utm_medium=linkcopy&utm_content=3FO3S1GAYU46" target="_blank" rel="noopener">바로보기</a>
-        </div>
+        <div class="name">상계 주공 32py (VR)</div>
+        <div class="meta">현장 부감도 / 리빙존 동선</div>
+        <div style="margin-top:10px"><a class="btn" href="https://example.com/vr-link-1" target="_blank">바로보기</a></div>
       </div>
     </div>
 
-    <!-- 샘플 2 -->
     <div class="card">
-      <img class="thumb" src="assets/vr_샘플2.jpg" alt="">
+      <img class="thumb" src="assets/vr_광진_현대_24py.jpg" alt="">
       <div class="body">
         <div class="name">광진 현대 24py (VR)</div>
         <div class="meta">현장 부감도 / 주방 상세</div>
-        <div style="margin-top:10px; display:flex; gap:10px;">
-          <a class="btn" href="https://example.com/your-vr-link-2" target="_blank" rel="noopener">바로보기</a>
-        </div>
+        <div style="margin-top:10px"><a class="btn" href="https://example.com/vr-link-2" target="_blank">바로보기</a></div>
       </div>
     </div>
-
-    <!-- 샘플 3 -->
-    <div class="card">
-      <img class="thumb" src="assets/vr_샘플3.jpg" alt="">
-      <div class="body">
-        <div class="name">상도동 동아 29py (VR)</div>
-        <div class="meta">현장 부감도 / 컬러 스킴</div>
-        <div style="margin-top:10px; display:flex; gap:10px;">
-          <a class="btn" href="https://example.com/your-vr-link-3" target="_blank" rel="noopener">바로보기</a>
-        </div>
-      </div>
-    </div>
-
   </div>
 </main>
 
-<footer class="site-footer">
-  <div class="wrap">
-    <div>한샘 리하우스 디자인버프 대리점</div>
-    <div>010-6245-9059 • skdidbstkd@naver.com • <a href="https://blog.naver.com/paul940125" target="_blank">네이버 블로그</a></div>
-  </div>
-</footer>
+<footer class="site-footer"><div class="wrap">한샘 리하우스 디자인버프 대리점</div></footer>
+
 <script>
 document.body.classList.add('page-enter');
 document.querySelectorAll('a[href]').forEach(a=>{
-  if(a.target==='_blank' || a.href.includes('#')) return;
-  a.addEventListener('click', e=>{
-    e.preventDefault();
-    document.body.classList.add('page-leave');
-    setTimeout(()=>location.href=a.href, 200);
-  });
+  if(a.target==='_blank'||a.href.includes('#'))return;
+  a.addEventListener('click',e=>{e.preventDefault();document.body.classList.add('page-leave');setTimeout(()=>location.href=a.href,200);});
 });
 </script>
 </body>
