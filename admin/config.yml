@@ -2,6 +2,8 @@ backend:
   name: github
   repo: skdidbstkd/hanssemdesignbuff
   branch: main
+  base_url: https://skdidbstkd.github.io
+  auth_endpoint: /api/auth
 
 media_folder: "assets"
 public_folder: "assets"
