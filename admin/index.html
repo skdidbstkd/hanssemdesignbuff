@@ -3,23 +3,49 @@
   <head>
     <meta charset="utf-8" />
     <title>DesignBuff CMS Admin</title>
-    <!-- decap-cms 스크립트는 반드시 defer 로딩 -->
-    <script src="https://unpkg.com/decap-cms@3.0.0/dist/decap-cms.js" defer></script>
+    <style>
+      body{font-family:system-ui,-apple-system,'Noto Sans KR',sans-serif;margin:0}
+      #loading{display:flex;align-items:center;justify-content:center;height:100vh;color:#444}
+      #err{display:none;padding:16px 20px;margin:24px;border:1px solid #f5c2c7;background:#fff5f5;color:#b4232a;border-radius:8px}
+    </style>
   </head>
   <body>
-    <!-- 루트 엘리먼트 명시 -->
-    <div id="nc-root"></div>
+    <div id="loading">관리자 화면 불러오는 중… (최대 5초)</div>
+    <div id="err"></div>
+
+    <!-- decap-cms 스크립트: jsDelivr 사용 (defer 적용) -->
+    <script defer src="https://cdn.jsdelivr.net/npm/decap-cms@3.0.0/dist/decap-cms.js"></script>
 
     <script>
-      // DOM이 준비된 후에 수동 초기화 (appendChild 에러 방지)
-      window.addEventListener('DOMContentLoaded', function () {
-        if (window.CMS) {
-          window.CMS.init({
-            config: '/hanssemdesignbuff/admin/config.yml' // GitHub Pages 하위 경로 고려
-          });
-        } else {
-          console.error('Decap CMS script not loaded');
+      // 8초 안에 CMS가 안 뜨면 오류 안내
+      const timeout = setTimeout(() => {
+        const e = document.getElementById('err');
+        e.style.display = 'block';
+        e.textContent = 'CMS 스크립트를 불러오지 못했습니다. 새로고침(Ctrl/Cmd+Shift+R) 해보세요.';
+      }, 8000);
+
+      window.addEventListener('DOMContentLoaded', () => {
+        // DOM 준비 후 CMS 초기화 (하얀 화면/appendChild 에러 방지)
+        const boot = () => {
+          if (!window.CMS) return;               // 아직 로드 안 됨
+          clearTimeout(timeout);
+          document.getElementById('loading').remove();
+          // GitHub Pages 하위 경로 고려해서 config 경로 고정
+          window.CMS.init({ config: '/hanssemdesignbuff/admin/config.yml' });
+        };
+
+        if (window.CMS) boot();
+        else {
+          // decap-cms 스크립트 로드 완료 시점
+          window.addEventListener('load', boot);
         }
+
+        // 로딩 실패 시 대체 안내
+        window.addEventListener('error', (ev) => {
+          const e = document.getElementById('err');
+          e.style.display = 'block';
+          e.textContent = '스크립트 로드 에러: ' + (ev?.message || '네트워크 문제일 수 있습니다.');
+        }, true);
       });
     </script>
   </body>
