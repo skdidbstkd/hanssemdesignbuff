@@ -1,82 +1,44 @@
 <!doctype html>
 <html lang="ko">
-  <head>
-    <meta charset="utf-8" />
-    <title>DesignBuff CMS Admin</title>
-    <meta name="viewport" content="width=device-width,initial-scale=1" />
-    <style>
-      body{font-family:system-ui,-apple-system,"Noto Sans KR",sans-serif;margin:0}
-      #loading{display:flex;align-items:center;justify-content:center;height:100vh;color:#444}
-      #err{display:none;padding:16px 20px;margin:24px;border:1px solid #f5c2c7;background:#fff5f5;color:#b4232a;border-radius:8px}
-    </style>
+<head>
+  <meta charset="utf-8" />
+  <title>DesignBuff CMS Admin</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <style>
+    body{font-family:system-ui,-apple-system,"Noto Sans KR",sans-serif;margin:0}
+    #loading{display:flex;align-items:center;justify-content:center;height:100vh;color:#444}
+    #err{display:none;padding:16px 20px;margin:24px;border:1px solid #f5c2c7;background:#fff5f5;color:#b4232a;border-radius:8px}
+  </style>
+  <!-- 수동 초기화 -->
+  <script>window.CMS_MANUAL_INIT = true;</script>
 
-    <!-- 수동 초기화 모드 -->
-    <script>window.CMS_MANUAL_INIT = true;</script>
+  <!-- ★ 검증된 안정판(2.x) 사용: CDN 한 줄만 -->
+  <script defer src="https://cdn.jsdelivr.net/npm/decap-cms@2.15.65/dist/decap-cms.js"></script>
+</head>
+<body>
+  <div id="loading">관리자 화면 불러오는 중… (최대 5초)</div>
+  <div id="err"></div>
 
-    <!-- decap-cms 이중 로더: unpkg 실패 시 jsDelivr로 자동 대체 -->
-    <script>
-      (function loadDecap(){
-        function inject(src){
-          var s=document.createElement('script');
-          s.defer = true;
-          s.src = src;
-          s.onload = boot;
-          s.onerror = function(){
-            // 첫 시도 실패 → 대체 CDN 시도
-            if (!window.__decapTriedFallback){
-              window.__decapTriedFallback = true;
-              inject('https://cdn.jsdelivr.net/npm/decap-cms@3.0.11/dist/decap-cms.js');
-            } else {
-              showErr('CMS 스크립트를 불러오지 못했습니다. 네트워크/차단 설정을 확인하고 다시 시도해 주세요.');
-            }
-          };
-          document.head.appendChild(s);
-        }
-        inject('https://unpkg.com/decap-cms@3.0.11/dist/decap-cms.js');
-      })();
-    </script>
-  </head>
+  <script>
+    // 8초 넘으면 안내
+    const timer = setTimeout(()=>err('로딩 지연: 강력 새로고침(Ctrl/Cmd+Shift+R) 후 재시도하세요.'), 8000);
 
-  <body>
-    <div id="loading">관리자 화면 불러오는 중… (최대 5초)</div>
-    <div id="err"></div>
+    function err(m){ const e=document.getElementById('err'); e.style.display='block'; e.textContent=m; }
 
-    <script>
-      // 8초 안에 CMS가 안 뜨면 안내
-      const failTimer = setTimeout(() => {
-        showErr('로딩이 지연됩니다. 강력 새로고침(Ctrl/Cmd+Shift+R) 후 재시도해 주세요.');
-      }, 8000);
+    // 스크립트 로드 완료 시점에만 초기화
+    window.addEventListener('load', function(){
+      if(!window.CMS){ err('CMS 스크립트를 불러오지 못했습니다.'); return; }
+      try{
+        clearTimeout(timer);
+        const loading=document.getElementById('loading'); if(loading) loading.remove();
 
-      function showErr(msg){
-        const e = document.getElementById('err');
-        e.style.display = 'block';
-        e.textContent = msg || '알 수 없는 오류가 발생했습니다.';
-      }
+        // GitHub Pages 하위경로 → 상대경로로 단순화 (admin/ 에 있으니 OK)
+        CMS.init({ config: 'config.yml' });
+      }catch(e){ err('초기화 오류: '+(e?.message||e)); }
+    }, { once:true });
 
-      function boot(){
-        if (!window.CMS){ showErr('CMS 초기화 실패'); return; }
-        clearTimeout(failTimer);
-        const loading = document.getElementById('loading');
-        if (loading) loading.remove();
-
-        // 인증 완료 시 즉시 UI 표시 보정
-        CMS.registerEventListener({
-          name: 'authenticated',
-          handler: () => {
-            setTimeout(() => {
-              try { CMS.getCMS().updateAuth({ isFetching:false }); } catch(e){}
-            }, 0);
-          }
-        });
-
-        // GitHub Pages의 하위 경로 고려 (반드시 본인 저장소 경로)
-        CMS.init({ config: '/hanssemdesignbuff/admin/config.yml' });
-      }
-
-      // 전역 스크립트 에러도 사용자 메시지로 노출
-      window.addEventListener('error', (ev) => {
-        showErr('스크립트 에러: ' + (ev?.message || '네트워크 문제일 수 있습니다.'));
-      }, true);
-    </script>
-  </body>
+    // 전역 스크립트 에러도 안내
+    window.addEventListener('error', (ev)=>err('스크립트 에러: '+(ev?.message||'')), true);
+  </script>
+</body>
 </html>
