@@ -47,6 +47,22 @@
           e.textContent = '스크립트 로드 에러: ' + (ev?.message || '네트워크 문제일 수 있습니다.');
         }, true);
       });
+      <script>
+  // OAuth 토큰을 강제로 수신하고 저장
+  window.addEventListener('message', function(e) {
+    if (e.data && e.data.indexOf('authorization:github:success:') === 0) {
+      const token = e.data.split('authorization:github:success:')[1];
+      // Decap CMS가 사용하는 토큰 스토리지에 강제 저장
+      localStorage.setItem('netlify-cms-user', JSON.stringify({
+        token: token,
+        provider: 'github'
+      }));
+      // 저장 후 새로고침
+      window.location.reload();
+    }
+  });
+</script>
+
     </script>
   </body>
 </html>
