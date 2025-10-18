@@ -2,7 +2,7 @@ backend:
   name: github
   repo: skdidbstkd/hanssemdesignbuff
   branch: main
-  base_url: https://designbuff-oauth-vercel.vercel.app/api/callback   # 위 도메인과 동일
+  base_url: https://designbuff-oauth-vercel.vercel.app
   auth_endpoint: /api/auth
 
 media_folder: "assets/uploads"   # 실제 파일 저장 경로
