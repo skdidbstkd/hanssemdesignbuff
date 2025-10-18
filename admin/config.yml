@@ -2,8 +2,8 @@ backend:
   name: github
   repo: skdidbstkd/hanssemdesignbuff
   branch: main
-  base_url: https://netlify-cms-github-oauth-provider-r.vercel.app
-  auth_endpoint: /auth
+  base_url: https://designbuff-oauth-vercel.vercel.app/api/callback   # 위 도메인과 동일
+  auth_endpoint: /api/auth
 
 media_folder: "assets/uploads"   # 실제 파일 저장 경로
 public_folder: "/hanssemdesignbuff/assets/uploads"  # 웹에서 보이는 경로 (GitHub Pages 하위 경로 반영)
