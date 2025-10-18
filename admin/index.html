@@ -3,8 +3,9 @@
   <head>
     <meta charset="utf-8" />
     <title>DesignBuff CMS Admin</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
     <style>
-      body{font-family:system-ui,-apple-system,'Noto Sans KR',sans-serif;margin:0}
+      body{font-family:system-ui,-apple-system,"Noto Sans KR",sans-serif;margin:0}
       #loading{display:flex;align-items:center;justify-content:center;height:100vh;color:#444}
       #err{display:none;padding:16px 20px;margin:24px;border:1px solid #f5c2c7;background:#fff5f5;color:#b4232a;border-radius:8px}
     </style>
@@ -13,9 +14,24 @@
     <div id="loading">관리자 화면 불러오는 중… (최대 5초)</div>
     <div id="err"></div>
 
-    <!-- decap-cms 스크립트: jsDelivr 사용 (defer 적용) -->
+    <!-- Decap CMS (defer 로딩) -->
     <script defer src="https://cdn.jsdelivr.net/npm/decap-cms@3.0.0/dist/decap-cms.js"></script>
 
+    <!-- OAuth 토큰 수신 스니펫: pop-up에서 넘어온 토큰 저장 후 새로고침 -->
+    <script>
+      window.addEventListener('message', function(e) {
+        if (e.data && e.data.indexOf('authorization:github:success:') === 0) {
+          const token = e.data.split('authorization:github:success:')[1];
+          localStorage.setItem('netlify-cms-user', JSON.stringify({
+            token: token,
+            provider: 'github'
+          }));
+          window.location.reload();
+        }
+      });
+    </script>
+
+    <!-- CMS 부트스트랩 -->
     <script>
       // 8초 안에 CMS가 안 뜨면 오류 안내
       const timeout = setTimeout(() => {
@@ -24,45 +40,24 @@
         e.textContent = 'CMS 스크립트를 불러오지 못했습니다. 새로고침(Ctrl/Cmd+Shift+R) 해보세요.';
       }, 8000);
 
-      window.addEventListener('DOMContentLoaded', () => {
-        // DOM 준비 후 CMS 초기화 (하얀 화면/appendChild 에러 방지)
-        const boot = () => {
-          if (!window.CMS) return;               // 아직 로드 안 됨
-          clearTimeout(timeout);
-          document.getElementById('loading').remove();
-          // GitHub Pages 하위 경로 고려해서 config 경로 고정
-          window.CMS.init({ config: '/hanssemdesignbuff/admin/config.yml' });
-        };
+      function boot() {
+        if (!window.CMS) return; // 아직 로드 전이면 그대로 둠
+        clearTimeout(timeout);
+        const loading = document.getElementById('loading');
+        if (loading) loading.remove();
+        // GitHub Pages 하위 경로 고려하여 config 경로 고정
+        window.CMS.init({ config: '/hanssemdesignbuff/admin/config.yml' });
+      }
 
-        if (window.CMS) boot();
-        else {
-          // decap-cms 스크립트 로드 완료 시점
-          window.addEventListener('load', boot);
-        }
+      // decap-cms가 defer로 로드되므로 load 시점에 부팅
+      window.addEventListener('load', boot, false);
 
-        // 로딩 실패 시 대체 안내
-        window.addEventListener('error', (ev) => {
-          const e = document.getElementById('err');
-          e.style.display = 'block';
-          e.textContent = '스크립트 로드 에러: ' + (ev?.message || '네트워크 문제일 수 있습니다.');
-        }, true);
-      });
-      <script>
-  // OAuth 토큰을 강제로 수신하고 저장
-  window.addEventListener('message', function(e) {
-    if (e.data && e.data.indexOf('authorization:github:success:') === 0) {
-      const token = e.data.split('authorization:github:success:')[1];
-      // Decap CMS가 사용하는 토큰 스토리지에 강제 저장
-      localStorage.setItem('netlify-cms-user', JSON.stringify({
-        token: token,
-        provider: 'github'
-      }));
-      // 저장 후 새로고침
-      window.location.reload();
-    }
-  });
-</script>
-
+      // 로딩 실패 시 대체 안내
+      window.addEventListener('error', (ev) => {
+        const e = document.getElementById('err');
+        e.style.display = 'block';
+        e.textContent = '스크립트 로드 에러: ' + (ev?.message || '네트워크 문제일 수 있습니다.');
+      }, true);
     </script>
   </body>
 </html>
