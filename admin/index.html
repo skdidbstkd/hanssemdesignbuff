@@ -9,29 +9,15 @@
       #loading{display:flex;align-items:center;justify-content:center;height:100vh;color:#444}
       #err{display:none;padding:16px 20px;margin:24px;border:1px solid #f5c2c7;background:#fff5f5;color:#b4232a;border-radius:8px}
     </style>
+    <!-- Decap CMS를 수동 초기화 모드로 -->
+    <script>window.CMS_MANUAL_INIT = true;</script>
+    <!-- Decap CMS -->
+    <script defer src="https://cdn.jsdelivr.net/npm/decap-cms@3.0.0/dist/decap-cms.js"></script>
   </head>
   <body>
     <div id="loading">관리자 화면 불러오는 중… (최대 5초)</div>
     <div id="err"></div>
 
-    <!-- Decap CMS (defer 로딩) -->
-    <script defer src="https://cdn.jsdelivr.net/npm/decap-cms@3.0.0/dist/decap-cms.js"></script>
-
-    <!-- OAuth 토큰 수신 스니펫: pop-up에서 넘어온 토큰 저장 후 새로고침 -->
-    <script>
-      window.addEventListener('message', function(e) {
-        if (e.data && e.data.indexOf('authorization:github:success:') === 0) {
-          const token = e.data.split('authorization:github:success:')[1];
-          localStorage.setItem('netlify-cms-user', JSON.stringify({
-            token: token,
-            provider: 'github'
-          }));
-          window.location.reload();
-        }
-      });
-    </script>
-
-    <!-- CMS 부트스트랩 -->
     <script>
       // 8초 안에 CMS가 안 뜨면 오류 안내
       const timeout = setTimeout(() => {
@@ -45,8 +31,19 @@
         clearTimeout(timeout);
         const loading = document.getElementById('loading');
         if (loading) loading.remove();
+
+        // 인증 성공 시 강제로 UI 표시
+        CMS.registerEventListener({
+          name: 'authenticated',
+          handler: () => {
+            // 인증 완료되면 컬렉션 화면이 바로 보이도록
+            // (Decap이 토큰을 받았는데 UI를 안 띄우는 경우 대비)
+            setTimeout(() => CMS.getIdentity() && CMS.getCMS() && CMS.getCMS().updateAuth({ isFetching: false }), 0);
+          }
+        });
+
         // GitHub Pages 하위 경로 고려하여 config 경로 고정
-        window.CMS.init({ config: '/hanssemdesignbuff/admin/config.yml' });
+        CMS.init({ config: '/hanssemdesignbuff/admin/config.yml' });
       }
 
       // decap-cms가 defer로 로드되므로 load 시점에 부팅
