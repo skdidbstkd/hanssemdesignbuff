@@ -2,17 +2,13 @@ backend:
   name: github
   repo: skdidbstkd/hanssemdesignbuff
   branch: main
-
-  # GitHub OAuth 프록시 (Vercel)
   base_url: https://designbuff-oauth-vercel.vercel.app
   auth_endpoint: /api/auth
 
 site_url: https://skdidbstkd.github.io/hanssemdesignbuff
 logo_url: https://skdidbstkd.github.io/hanssemdesignbuff/assets/한샘_디자인버프_로고_최종.png
 
-# 업로드 경로 (리포지토리 내부)
 media_folder: "assets/uploads"
-# 공개 경로 (GitHub Pages 하위폴더 고려)
 public_folder: "/hanssemdesignbuff/assets/uploads"
 
 publish_mode: editorial_workflow
