@@ -6,37 +6,46 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <style>
       body{font-family:system-ui,-apple-system,'Noto Sans KR',sans-serif;margin:0}
-      .wrap{min-height:100vh;display:flex;align-items:center;justify-content:center}
+      .wrap{min-height:100vh;display:flex;align-items:center;justify-content:center;flex-direction:column}
       .hint{color:#666;font-size:14px;margin-top:12px;text-align:center}
+      #err{display:none;margin-top:16px;padding:10px 12px;border-radius:8px;border:1px solid #f5c2c7;background:#fff5f5;color:#b4232a}
     </style>
   </head>
   <body>
     <div class="wrap">
-      <div>
-        <div style="text-align:center">관리자 화면 불러오는 중…</div>
-        <div class="hint">새로고침이 필요하면 <b>Ctrl/⌘+Shift+R</b></div>
-      </div>
+      <div>관리자 화면 불러오는 중…</div>
+      <div class="hint">안 뜨면 <b>Ctrl/⌘+Shift+R</b> (강력 새로고침)</div>
+      <div id="err"></div>
     </div>
 
-    <!-- 1) Decap CMS 스크립트: 우리가 업로드한 로컬 파일 사용 -->
-    <!-- 상대경로 사용 → GitHub Pages(하위 경로)와 일반 도메인 모두 대응 -->
+    <!-- CMS가 렌더링될 고정 루트. 반드시 있어야 함 -->
+    <div id="nc-root"></div>
+
+    <!-- 수동 초기화 플래그 -->
+    <script>window.CMS_MANUAL_INIT = true;</script>
+
+    <!-- (A) 로컬에 올려둔 단일 스크립트만 사용 -->
     <script defer src="./decap-cms.js"></script>
 
-    <!-- 2) CMS 초기화 (충돌 코드 제거, removeChild 등 DOM 조작 없음) -->
+    <!-- 초기화 스크립트 (중복 호출/DOM 조작 없음) -->
     <script>
-      (function init() {
-        // GitHub Pages(하위경로)와 일반 루트 모두 대응되는 config 경로 계산
-        var hasSubdir = location.pathname.indexOf('/hanssemdesignbuff/') !== -1;
-        var configPath = hasSubdir
+      (function () {
+        // GitHub Pages 하위경로 대응
+        var configPath = (location.pathname.indexOf('/hanssemdesignbuff/') !== -1)
           ? '/hanssemdesignbuff/admin/config.yml'
           : '/admin/config.yml';
 
-        function boot() {
-          if (!window.CMS) { setTimeout(boot, 100); return; }
-          window.CMS.init({ config: configPath });
+        function start() {
+          try {
+            if (!window.CMS) { setTimeout(start, 80); return; }
+            window.CMS.init({ config: configPath });
+          } catch (e) {
+            var el = document.getElementById('err');
+            el.style.display = 'block';
+            el.textContent = 'CMS 초기화 오류: ' + (e && e.message ? e.message : e);
+          }
         }
-        // 스크립트가 defer라 load 시점에는 거의 준비됨
-        window.addEventListener('load', boot);
+        window.addEventListener('load', start);
       })();
     </script>
   </body>
