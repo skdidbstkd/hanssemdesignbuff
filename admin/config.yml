@@ -1,8 +1,7 @@
 backend:
   name: github
-  repo: skdidbstkd/hanssemdesignbuff
-  branch: main
-  base_url: https://designbuff-oauth-vercel.vercel.app
+  repo: skdidbstkd/hanssemdesignbuff        # 예: skdidbstkd/portfolio-site
+  base_url: https://https://designbuff-oauth-vercel.vercel.app   # 예: https://designbuff-oauth-vercel.vercel.app
   auth_endpoint: /api/auth
 
 site_url: https://skdidbstkd.github.io/hanssemdesignbuff
