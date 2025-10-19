@@ -2,101 +2,64 @@
 <html lang="ko">
   <head>
     <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1">
     <title>DesignBuff CMS Admin</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <style>
-      :root{--fg:#222;--muted:#666;--err:#b4232a;--bd:#e5e7eb;}
-      html,body{margin:0;height:100%}
-      body{font-family:system-ui,-apple-system,"Noto Sans KR",Segoe UI,Roboto,Helvetica,Arial,sans-serif;color:var(--fg);background:#fff}
-      .wrap{max-width:960px;margin:0 auto;padding:24px}
-      .card{border:1px solid var(--bd);border-radius:12px;padding:24px;margin-top:24px}
-      .muted{color:var(--muted)}
-      .btn{display:inline-block;padding:10px 14px;border:1px solid var(--bd);border-radius:10px;text-decoration:none;color:var(--fg);background:#fafafa}
-      .btn:active{transform:translateY(1px)}
-      #err{display:none;border-color:#f5c2c7;background:#fff5f5;color:var(--err)}
-      #loading{display:flex;align-items:center;justify-content:center;height:60vh}
-      code{background:#f6f7f9;border:1px solid var(--bd);padding:2px 6px;border-radius:6px}
+      body{font-family:system-ui,-apple-system,'Noto Sans KR',sans-serif;margin:0}
+      #loading{display:flex;align-items:center;justify-content:center;height:100vh;color:#444}
+      #err{display:none;padding:16px 20px;margin:24px;border:1px solid #f5c2c7;background:#fff5f5;color:#b4232a;border-radius:8px;line-height:1.5}
+      .small{font-size:12px;color:#777;margin-top:8px}
     </style>
   </head>
   <body>
-    <div class="wrap">
-      <h1 style="margin:24px 0 8px">DesignBuff CMS Admin</h1>
-      <p class="muted" style="margin:0 0 8px">/admin 페이지는 로그인 후에만 보입니다.</p>
-
-      <div id="loading" class="card">관리자 화면 불러오는 중… (최대 8초)</div>
-      <div id="err" class="card"></div>
-
-      <div class="card muted">
-        문제가 계속되면 <span class="btn" onclick="location.reload(true)">강력 새로고침</span>
-        ( <code>Ctrl/Cmd + Shift + R</code> ) 을 눌러주세요.
-      </div>
+    <div id="loading">
+      관리자 화면 불러오는 중… (최대 5초)
     </div>
+    <div id="err"></div>
 
-    <!-- 1) Decap CMS 스크립트: 1차 jsDelivr, 실패시 2차 unpkg 자동 로드 -->
-    <script>
-      (function loadCMS(){
-        var s1=document.createElement('script');
-        s1.defer=true;
-        s1.src="https://cdn.jsdelivr.net/npm/decap-cms@2.15.65/dist/decap-cms.js";
-        s1.onerror=function(){
-          var s2=document.createElement('script');
-          s2.defer=true;
-          s2.src="https://unpkg.com/decap-cms@2.15.65/dist/decap-cms.js";
-          s2.onerror=function(){
-            showErr("CMS 스크립트를 불러오지 못했습니다. 인터넷/차단 프로그램을 확인하시고 강력 새로고침 해보세요.");
-          };
-          document.head.appendChild(s2);
-        };
-        document.head.appendChild(s1);
-      })();
-    </script>
+    <!-- 로컬에 올려둔 Decap CMS 번들 (defer 필수) -->
+    <script defer src="/hanssemdesignbuff/admin/decap-cms.js?v=1"></script>
 
-    <!-- 2) GitHub OAuth 팝업에서 받은 토큰을 강제 저장 (팝업이 즉시 닫히는 현상 대비) -->
     <script>
-      window.addEventListener('message', function(e){
-        if(!e || !e.data || typeof e.data!=='string') return;
-        var KEY='authorization:github:success:';
-        if(e.data.indexOf(KEY)===0){
-          var token=e.data.slice(KEY.length);
-          try{
-            localStorage.setItem('netlify-cms-user', JSON.stringify({token:token,provider:'github'}));
-          }catch(_){}
+      // 8초 안에 CMS가 준비되지 않으면 오류 메시지 표시
+      const timer = setTimeout(() => {
+        const e = document.getElementById('err');
+        e.style.display = 'block';
+        e.innerHTML = 'CMS 스크립트를 불러오지 못했습니다.<br>강력 새로고침(Ctrl/Cmd + Shift + R) 후 다시 시도하세요.';
+      }, 8000);
+
+      // 모든 스크립트 로딩이 끝난 뒤 실행
+      window.addEventListener('load', () => {
+        try {
+          if (!window.CMS) return; // 아직 로드 전이면 위 타임아웃이 안내
+          clearTimeout(timer);
+          const loading = document.getElementById('loading');
+          if (loading) loading.remove();
+
+          // GitHub Pages 하위 경로 고려하여 config 경로 고정
+          window.CMS.init({ config: '/hanssemdesignbuff/admin/config.yml' });
+
+        } catch (err) {
+          clearTimeout(timer);
+          const e = document.getElementById('err');
+          e.style.display = 'block';
+          e.textContent = '초기화 오류: ' + (err && err.message ? err.message : err);
+        }
+      });
+
+      // 팝업 인증(VerCel OAuth) 성공 메시지 처리 (있으면 자동 저장 후 새로고침)
+      window.addEventListener('message', function (ev) {
+        if (ev && ev.data && typeof ev.data === 'string' &&
+            ev.data.indexOf('authorization:github:success:') === 0) {
+          const token = ev.data.split('authorization:github:success:')[1];
+          try {
+            localStorage.setItem('netlify-cms-user', JSON.stringify({
+              token: token, provider: 'github'
+            }));
+          } catch(_) {}
           location.reload();
         }
       });
-    </script>
-
-    <!-- 3) CMS 부팅 로직 (GitHub Pages 하위경로 고려해서 config 경로 고정) -->
-    <script>
-      var bootTimer, readyTimer;
-      function showErr(msg){
-        var e=document.getElementById('err');
-        e.style.display='block';
-        e.textContent='스크립트 로드 에러: '+msg;
-      }
-      function boot(){
-        if(!window.CMS){ return; }
-        clearTimeout(bootTimer);
-        var loading=document.getElementById('loading');
-        if(loading) loading.remove();
-
-        // GitHub Pages 하위 경로: /hanssemdesignbuff/admin/config.yml
-        window.CMS.init({ config: '/hanssemdesignbuff/admin/config.yml' });
-
-        // 8초 안에 CMS 루트가 없으면 에러 노출
-        readyTimer=setTimeout(function(){
-          if(!document.querySelector('[data-slate-editor]') && !document.querySelector('.Pane')){
-            showErr('CMS UI가 보이지 않습니다. 팝업 차단 해제 후 다시 시도하세요.');
-          }
-        }, 8000);
-      }
-
-      // 8초 후에도 CMS 객체가 없으면 에러
-      bootTimer=setTimeout(function(){
-        if(!window.CMS){ showErr('CMS 스크립트가 지연됩니다. 강력 새로고침 해보세요.'); }
-      }, 8000);
-
-      window.addEventListener('load', boot);
     </script>
   </body>
 </html>
