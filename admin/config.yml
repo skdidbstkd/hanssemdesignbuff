@@ -2,39 +2,56 @@ backend:
   name: github
   repo: skdidbstkd/hanssemdesignbuff
   branch: main
-  base_url: https://designbuff-oauth-vercel.vercel.app   # ← 루트 도메인만
-  auth_endpoint: /api/auth                                # ← 그대로 /api/auth
 
-media_folder: "assets/uploads"   # 실제 파일 저장 경로
-public_folder: "/hanssemdesignbuff/assets/uploads"  # 웹에서 보이는 경로 (GitHub Pages 하위 경로 반영)
+  # GitHub OAuth 프록시 (Vercel)
+  base_url: https://designbuff-oauth-vercel.vercel.app
+  auth_endpoint: /api/auth
 
 site_url: https://skdidbstkd.github.io/hanssemdesignbuff
-display_url: https://skdidbstkd.github.io/hanssemdesignbuff
+logo_url: https://skdidbstkd.github.io/hanssemdesignbuff/assets/한샘_디자인버프_로고_최종.png
+
+# 업로드 경로 (리포지토리 내부)
+media_folder: "assets/uploads"
+# 공개 경로 (GitHub Pages 하위폴더 고려)
+public_folder: "/hanssemdesignbuff/assets/uploads"
 
 publish_mode: editorial_workflow
+locale: "ko"
 
 collections:
+  - name: "pages"
+    label: "단일 페이지"
+    files:
+      - file: "index.html"
+        label: "메인"
+        name: "home"
+        fields:
+          - { label: "타이틀", name: "title", widget: "string", required: false }
+          - { label: "본문", name: "body", widget: "markdown", required: false }
+
+  - name: "designers"
+    label: "디자이너 소개"
+    folder: "content/designers"
+    create: true
+    slug: "{{slug}}"
+    fields:
+      - { label: "이름", name: "name", widget: "string" }
+      - { label: "직함", name: "role", widget: "string", required: false }
+      - { label: "프로필 이미지", name: "profile", widget: "image", required: false }
+      - { label: "소개(해시태그/요약)", name: "bio", widget: "markdown", required: false }
+
   - name: "portfolio"
     label: "포트폴리오"
     folder: "content/portfolio"
     create: true
     slug: "{{slug}}"
     fields:
-      - { label: "제목", name: "title", widget: "string" }
-      - { label: "설명", name: "description", widget: "text" }
-      - { label: "대표 이미지", name: "thumbnail", widget: "image" }
-      - { label: "본문", name: "body", widget: "markdown" }
-
-  - name: "designers"
-    label: "디자이너"
-    folder: "content/designers"
-    create: true
-    slug: "{{slug}}"
-    fields:
-      - { label: "이름", name: "name", widget: "string" }
-      - { label: "직책", name: "role", widget: "string" }
-      - { label: "프로필 이미지", name: "profile_image", widget: "image" }
-      - { label: "소개", name: "bio", widget: "markdown" }
+      - { label: "현장명", name: "title", widget: "string" }
+      - { label: "대표 이미지", name: "cover", widget: "image" }
+      - { label: "Location", name: "location", widget: "string", required: false }
+      - { label: "기간", name: "period", widget: "string", required: false }
+      - { label: "Point", name: "point", widget: "string", required: false }
+      - { label: "갤러리", name: "gallery", widget: "list", field: { label: "이미지", name: "img", widget: "image" } }
 
   - name: "vr"
     label: "3D VR 투어"
@@ -43,6 +60,5 @@ collections:
     slug: "{{slug}}"
     fields:
       - { label: "현장명", name: "title", widget: "string" }
-      - { label: "부감도", name: "thumbnail", widget: "image" }
-      - { label: "링크", name: "link", widget: "string" }
-      - { label: "설명", name: "description", widget: "text", required: false }
+      - { label: "부감 이미지", name: "thumb", widget: "image" }
+      - { label: "외부 링크(URL)", name: "url", widget: "string" }
