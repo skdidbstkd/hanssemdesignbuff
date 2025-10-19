@@ -13,53 +13,6 @@
     </style>
   </head>
   <body>
-    <div class="wrap">
-      <div id="status">관리자 화면 불러오는 중…</div>
-      <div class="hint">안 뜨면 <b>Ctrl/⌘+Shift+R</b> (강력 새로고침)</div>
-      <div id="err" style="display:none;padding:10px 12px;border-radius:8px;border:1px solid #f5c2c7;background:#fff5f5;color:#b4232a;max-width:720px"></div>
-    </div>
-
-    <!-- CMS가 붙을 고정 루트 -->
-    <div id="nc-root"></div>
-
-    <!-- 수동 초기화 플래그 -->
-    <script>window.CMS_MANUAL_INIT = true;</script>
-
-    <!-- Decap CMS (지연 로드/버전 캐시 변수 제거, 표준 경로 사용) -->
-    <script src="https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js"></script>
-
-    <!-- 경로 하드코딩 + 로드 실패시 화면에 에러 표시 -->
-    <script>
-      (function () {
-        var statusEl = document.getElementById('status');
-        var errEl = document.getElementById('err');
-        function showErr(msg){ errEl.style.display='block'; errEl.textContent=msg; }
-
-        // GitHub Pages 하위 경로에 맞춰 '고정' 경로 사용
-        var configPath = '/hanssemdesignbuff/admin/config.yml';
-
-        function start() {
-          if (!window.CMS) { setTimeout(start, 50); return; }
-          statusEl.textContent = '관리자 초기화…';
-          try {
-            window.CMS.init({ config: configPath });
-          } catch (e) {
-            showErr('CMS 초기화 오류: ' + (e && e.message ? e.message : e));
-          }
-        }
-
-        // config.yml 접근성 사전 점검 후 시작
-        fetch(configPath, { cache: 'no-store' })
-          .then(function(r){ if(!r.ok) throw new Error('config.yml 응답 오류(' + r.status + ')'); return r.text(); })
-          .then(function(){ start(); })
-          .catch(function(e){ showErr('config.yml 로드 실패: ' + e.message); });
-
-        // 외부 스크립트 로드 실패 표시
-        window.addEventListener('error', function(ev){
-          if (ev && ev.target && ev.target.tagName === 'SCRIPT') {
-            showErr('스크립트 로드 실패(네트워크/CORS). 강력 새로고침(Ctrl/⌘+Shift+R) 후 재시도.');
-          }
-        }, true);
-      })();
-    </script>
+    <!-- 최소 버전: 자동 초기화. (상위 경로 자동 인식) -->
+    <script src="https://unpkg.com/decap-cms@3.3.1/dist/decap-cms.js"></script>
   </body>
