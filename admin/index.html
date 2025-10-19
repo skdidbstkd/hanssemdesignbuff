@@ -2,64 +2,42 @@
 <html lang="ko">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width,initial-scale=1">
     <title>DesignBuff CMS Admin</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <style>
       body{font-family:system-ui,-apple-system,'Noto Sans KR',sans-serif;margin:0}
-      #loading{display:flex;align-items:center;justify-content:center;height:100vh;color:#444}
-      #err{display:none;padding:16px 20px;margin:24px;border:1px solid #f5c2c7;background:#fff5f5;color:#b4232a;border-radius:8px;line-height:1.5}
-      .small{font-size:12px;color:#777;margin-top:8px}
+      .wrap{min-height:100vh;display:flex;align-items:center;justify-content:center}
+      .hint{color:#666;font-size:14px;margin-top:12px;text-align:center}
     </style>
   </head>
   <body>
-    <div id="loading">
-      관리자 화면 불러오는 중… (최대 5초)
+    <div class="wrap">
+      <div>
+        <div style="text-align:center">관리자 화면 불러오는 중…</div>
+        <div class="hint">새로고침이 필요하면 <b>Ctrl/⌘+Shift+R</b></div>
+      </div>
     </div>
-    <div id="err"></div>
 
-    <!-- 로컬에 올려둔 Decap CMS 번들 (defer 필수) -->
-    <script defer src="/hanssemdesignbuff/admin/decap-cms.js?v=1"></script>
+    <!-- 1) Decap CMS 스크립트: 우리가 업로드한 로컬 파일 사용 -->
+    <!-- 상대경로 사용 → GitHub Pages(하위 경로)와 일반 도메인 모두 대응 -->
+    <script defer src="./decap-cms.js"></script>
 
+    <!-- 2) CMS 초기화 (충돌 코드 제거, removeChild 등 DOM 조작 없음) -->
     <script>
-      // 8초 안에 CMS가 준비되지 않으면 오류 메시지 표시
-      const timer = setTimeout(() => {
-        const e = document.getElementById('err');
-        e.style.display = 'block';
-        e.innerHTML = 'CMS 스크립트를 불러오지 못했습니다.<br>강력 새로고침(Ctrl/Cmd + Shift + R) 후 다시 시도하세요.';
-      }, 8000);
+      (function init() {
+        // GitHub Pages(하위경로)와 일반 루트 모두 대응되는 config 경로 계산
+        var hasSubdir = location.pathname.indexOf('/hanssemdesignbuff/') !== -1;
+        var configPath = hasSubdir
+          ? '/hanssemdesignbuff/admin/config.yml'
+          : '/admin/config.yml';
 
-      // 모든 스크립트 로딩이 끝난 뒤 실행
-      window.addEventListener('load', () => {
-        try {
-          if (!window.CMS) return; // 아직 로드 전이면 위 타임아웃이 안내
-          clearTimeout(timer);
-          const loading = document.getElementById('loading');
-          if (loading) loading.remove();
-
-          // GitHub Pages 하위 경로 고려하여 config 경로 고정
-          window.CMS.init({ config: '/hanssemdesignbuff/admin/config.yml' });
-
-        } catch (err) {
-          clearTimeout(timer);
-          const e = document.getElementById('err');
-          e.style.display = 'block';
-          e.textContent = '초기화 오류: ' + (err && err.message ? err.message : err);
+        function boot() {
+          if (!window.CMS) { setTimeout(boot, 100); return; }
+          window.CMS.init({ config: configPath });
         }
-      });
-
-      // 팝업 인증(VerCel OAuth) 성공 메시지 처리 (있으면 자동 저장 후 새로고침)
-      window.addEventListener('message', function (ev) {
-        if (ev && ev.data && typeof ev.data === 'string' &&
-            ev.data.indexOf('authorization:github:success:') === 0) {
-          const token = ev.data.split('authorization:github:success:')[1];
-          try {
-            localStorage.setItem('netlify-cms-user', JSON.stringify({
-              token: token, provider: 'github'
-            }));
-          } catch(_) {}
-          location.reload();
-        }
-      });
+        // 스크립트가 defer라 load 시점에는 거의 준비됨
+        window.addEventListener('load', boot);
+      })();
     </script>
   </body>
 </html>
