@@ -5,47 +5,60 @@
     <title>DesignBuff CMS Admin</title>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <style>
+      :root{color-scheme:light dark}
       body{font-family:system-ui,-apple-system,'Noto Sans KR',sans-serif;margin:0}
-      .wrap{min-height:100vh;display:flex;align-items:center;justify-content:center;flex-direction:column}
-      .hint{color:#666;font-size:14px;margin-top:12px;text-align:center}
-      #err{display:none;margin-top:16px;padding:10px 12px;border-radius:8px;border:1px solid #f5c2c7;background:#fff5f5;color:#b4232a}
+      .wrap{min-height:100vh;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:10px}
+      .hint{color:#666;font-size:13px}
+      #err{display:none;padding:10px 12px;border-radius:8px;border:1px solid #f5c2c7;background:#fff5f5;color:#b4232a;max-width:720px}
     </style>
   </head>
   <body>
     <div class="wrap">
-      <div>관리자 화면 불러오는 중…</div>
+      <div id="status">관리자 화면 불러오는 중…</div>
       <div class="hint">안 뜨면 <b>Ctrl/⌘+Shift+R</b> (강력 새로고침)</div>
       <div id="err"></div>
     </div>
 
-    <!-- CMS가 렌더링될 고정 루트. 반드시 있어야 함 -->
+    <!-- CMS가 붙을 고정 루트 -->
     <div id="nc-root"></div>
 
     <!-- 수동 초기화 플래그 -->
     <script>window.CMS_MANUAL_INIT = true;</script>
 
-    <!-- (A) 로컬에 올려둔 단일 스크립트만 사용 -->
-    <script defer src="https://cdn.jsdelivr.net/npm/decap-cms@3.0.3/dist/decap-cms.js"></script>
+    <!-- Decap CMS: CDN 단일 스크립트만 사용 (+캐시무력화 쿼리) -->
+    <script defer src="https://cdn.jsdelivr.net/npm/decap-cms@3.0.4/dist/decap-cms.js?v=304"></script>
 
-    <!-- 초기화 스크립트 (중복 호출/DOM 조작 없음) -->
     <script>
       (function () {
-        // GitHub Pages 하위경로 대응
+        const err = (msg) => {
+          const e = document.getElementById('err');
+          e.style.display = 'block';
+          e.textContent = msg;
+        };
+
+        // GitHub Pages 하위 경로 대응
         var configPath = (location.pathname.indexOf('/hanssemdesignbuff/') !== -1)
           ? '/hanssemdesignbuff/admin/config.yml'
           : '/admin/config.yml';
 
         function start() {
+          if (!window.CMS) { requestAnimationFrame(start); return; }
           try {
-            if (!window.CMS) { setTimeout(start, 80); return; }
+            document.getElementById('status').textContent = '관리자 초기화…';
             window.CMS.init({ config: configPath });
           } catch (e) {
-            var el = document.getElementById('err');
-            el.style.display = 'block';
-            el.textContent = 'CMS 초기화 오류: ' + (e && e.message ? e.message : e);
+            err('CMS 초기화 오류: ' + (e && e.message ? e.message : e));
           }
         }
-        window.addEventListener('load', start);
+
+        window.addEventListener('load', start, { once: true });
+
+        // 네트워크/스크립트 로드 실패 표시
+        window.addEventListener('error', function(ev){
+          if (ev && ev.target && ev.target.tagName === 'SCRIPT') {
+            err('스크립트 로드 실패(네트워크/CORS): 강력 새로고침(Ctrl/⌘+Shift+R) 후 다시 시도');
+          }
+        }, true);
       })();
     </script>
   </body>
